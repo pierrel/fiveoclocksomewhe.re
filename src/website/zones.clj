@@ -57,3 +57,22 @@
                       hrow)]
     (map #(-> % :content last) city-anchors)))
 
+(defn cities-with-offset
+  "Returns all cities with the given `offset-str` in the hickory doc `hdoc`"
+  [offset-str hdoc]
+  (let [rows (rows-with-offset offset-str hdoc)]
+    (reduce concat
+            (map cities-in-row rows))))
+
+(defn offset-map [all-offsets hdoc]
+  (loop [res       {}
+         remaining all-offsets]
+    (if (empty? remaining)
+      res
+      (let [offset     (first remaining)
+            offset-str (str (if (>= 0 offset) "+" "") offset)]
+        (recur (assoc res
+                      offset
+                      (cities-with-offset offset-str hdoc))
+               (rest remaining))))))
+
