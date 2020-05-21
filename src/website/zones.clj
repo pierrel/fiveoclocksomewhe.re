@@ -35,22 +35,25 @@
 
 (def root "https://www.zeitverschiebung.net/en/all-time-zones.html")
 
-(defn parse [path]
-  (-> (client/get path) :body h/parse h/as-hickory))
+(defn parse [url]
+  (-> (client/get url) :body h/parse h/as-hickory))
 
-(defn rows-with-offset [offset doc]
+(defn rows-with-offset [offset-str hdoc]
   (sel/select (sel/and (sel/tag :tr)
                        (sel/has-descendant
                         (sel/and
                          (sel/tag :strong)
                          (sel/and
-                          (sel/find-in-text (re-pattern (str "UTC" offset)))
+                          (sel/find-in-text (re-pattern
+                                             (str "UTC" offset-str)))
                           (sel/not (sel/find-in-text #":"))))))
-              doc))
+              hdoc))
 
 (defn cities-in-row [hrow]
-  (sel/select (sel/child (sel/and (sel/tag :td)
-                                  sel/last-child)
-                         (sel/tag :a))
-              hrow))
+  (let [city-anchors (sel/select
+                      (sel/child (sel/and (sel/tag :td)
+                                          sel/last-child)
+                                 (sel/tag :a))
+                      hrow)]
+    (map #(-> % :content last) city-anchors)))
 
