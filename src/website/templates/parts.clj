@@ -33,7 +33,7 @@
                  :content "IE=edge"}]
          [:meta {:name "viewport"
                  :content "width=device-width, initial-scale=1"}]
-         [:title "My website"]
+         [:title "It's 5 o'clock somewhere"]
          (for [url ["//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
                     "//fonts.googleapis.com/icon?family=Material+Icons"
                     "css/main.css"]]
@@ -41,11 +41,7 @@
                    :href url}])
          ]
         (into [:body
-               (into [:div.container
-                      [:div.section
-                       [:h1.header.center-align "Heading!"]
-                       [:h2.header.center-align "Yeah!"]]
-                      (nav)]
-                     content)]
+               [:div.container
+                content]]
               (javascript (not (env/docker?))))))
 
