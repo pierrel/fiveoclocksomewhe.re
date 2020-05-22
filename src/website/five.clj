@@ -31,6 +31,7 @@
   []
   (let [time (t/offset-date-time)
         wanted-hour fiveoclock
+        offset-cities zones/offset-cities
         all-offsets offsets
         five-offsets (offsets-with-hour time
                                         wanted-hour
