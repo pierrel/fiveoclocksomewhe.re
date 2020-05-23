@@ -3,7 +3,7 @@
             [website.zones.data :as data]))
 
 (defn -main [& args]
-  (clojure.pprint/pprint 
+  (clojure.pprint/pprint
    (data/zone-map five/all-zones
                   (data/parse data/root))))
 
