@@ -1,6 +1,7 @@
 (ns website.five
   (:require [java-time :as t]
-            [website.zones :as zones]))
+            [website.zones :as zones]
+            [website.utils :as utils]))
 
 (def all-zones (t/available-zone-ids))
 
@@ -51,30 +52,6 @@
   [from-time match-hour offsets]
   (filter #(= match-hour (hour (with-offset from-time %))) offsets))
 
-(defn mapper
-  "Returns a map of `keys` associated to values by `f`"
-  [f keys]
-  (reduce (fn [acc k]
-            (assoc acc
-                   k
-                   (f k)))
-          {}
-          keys))
-
-(defn map-flip
-  ([m key]
-   (reduce (fn [acc val]
-             (assoc acc
-                    val
-                    key))
-           {}
-           (get m key)))
-  ([m]
-   (reduce (fn [acc key]
-             (merge acc (map-flip m key)))
-           {}
-           (keys m))))
-
 (defn fiveoclock-at
   "Returns all the principal cities where its 5 o'clock and their time"
   []
@@ -87,8 +64,8 @@
                                         all-offsets)
         zones (reduce concat (map offset-cities five-offsets))
         zone (rand-nth zones)
-        offset-zones (mapper offset-cities five-offsets)
-        zone-offset (map-flip offset-zones)
+        offset-zones (utils/mapper offset-cities five-offsets)
+        zone-offset (utils/map-flip offset-zones)
         offset (get zone-offset zone)
         time (with-offset time offset)]
     [(t/format "hh:mm a" time)
