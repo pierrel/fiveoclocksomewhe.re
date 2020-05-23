@@ -1,4 +1,4 @@
-(ns website.utils)
+(ns time.utils)
 
 (defn mapper
   "Returns a map of `keys` associated to values by `f`"

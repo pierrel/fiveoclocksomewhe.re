@@ -1,4 +1,4 @@
-(ns website.zones.data
+(ns time.zones.data
   (:require [hickory.core :as h]
             [hickory.select :as sel]
             [clj-http.client :as client]))

@@ -1,7 +1,7 @@
-(ns website.five
+(ns time.five
   (:require [java-time :as t]
-            [website.zones :as zones]
-            [website.utils :as utils]))
+            [time.zones :as zones]
+            [time.utils :as utils]))
 
 (def all-zones (t/available-zone-ids))
 

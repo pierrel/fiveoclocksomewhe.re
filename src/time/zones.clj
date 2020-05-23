@@ -1,5 +1,5 @@
-(ns website.zones
-  (:require [website.zones.data :as data]
+(ns time.zones
+  (:require [time.zones.data :as data]
             [clojure.set :as se]))
 
 

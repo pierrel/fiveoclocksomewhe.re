@@ -1,6 +1,6 @@
-(ns website.scraper
-  (:require [website.five :as five]
-            [website.zones.data :as data]))
+(ns time.scraper
+  (:require [time.five :as five]
+            [time.zones.data :as data]))
 
 (defn -main [& args]
   (clojure.pprint/pprint

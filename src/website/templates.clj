@@ -1,6 +1,6 @@
 (ns website.templates
   (:require [website.templates.parts :as parts]
-            [website.five :as five]))
+            [time.five :as five]))
 
 (defn home []
   (let [[time city] (five/fiveoclock-at)]
