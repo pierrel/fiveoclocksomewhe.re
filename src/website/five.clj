@@ -62,11 +62,17 @@
         five-offsets (offsets-with-hour time
                                         wanted-hour
                                         all-offsets)
-        zones (reduce concat (map offset-cities five-offsets))
-        zone (rand-nth zones)
-        offset-zones (utils/mapper offset-cities five-offsets)
-        zone-offset (utils/map-flip offset-zones)
-        offset (get zone-offset zone)
-        time (with-offset time offset)]
-    [(t/format "hh:mm a" time)
-     zone]))
+        matching-zones (reduce concat (map offset-cities five-offsets))
+        zones (remove #(-> % zones/zone-cities empty?) matching-zones)
+        zone-cities (zipmap zones (map zones/zone-cities zones))
+        all-cities (reduce concat (vals zone-cities))
+        fave-cities (zones/just-faves all-cities)
+        cities (if (empty? fave-cities)
+                 all-cities
+                 fave-cities)
+        city (rand-nth cities)
+        zone (get (utils/map-flip zone-cities) city)]
+    [(t/format "hh:mm a" (t/with-zone-same-instant
+                           (t/zoned-date-time time)
+                           zone))
+     city]))
