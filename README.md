@@ -1,4 +1,4 @@
-# Template for websites
+# It's 5 o'clock there
 
 With a focus on clojure, clojurescript, and azure
 
