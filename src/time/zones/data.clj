@@ -1,77 +1,7 @@
 (ns time.zones.data
-  (:require [hickory.core :as h]
-            [hickory.select :as sel]
-            [clj-http.client :as client]
+  (:require
             [clojure.java.io :as io]
             [clojure.edn :as edn]))
-
-(def root "https://www.zeitverschiebung.net/en/all-time-zones.html")
-
-(defn parse [url]
-  (-> (client/get url) :body h/parse h/as-hickory))
-
-(defn rows-with-offset
-  [offset-regex hdoc]
-  (sel/select (sel/and (sel/tag :tr)
-                       (sel/has-descendant
-                        (sel/find-in-text (re-pattern
-                                           (str "^UTC" offset-regex "$")))))
-              hdoc))
-
-(defn rows-with-zone
-  [zone-regex hdoc]
-  (sel/select (sel/and (sel/tag :tr)
-                       (sel/has-descendant
-                        (sel/and (sel/tag :td)
-                                 (sel/has-descendant
-                                  (sel/find-in-text
-                                   (re-pattern zone-regex))))))
-              hdoc))
-
-(defn cities-in-row [hrow]
-  (let [city-anchors (sel/select
-                      (sel/child (sel/and (sel/tag :td)
-                                          sel/last-child)
-                                 (sel/tag :a))
-                      hrow)]
-    (map #(-> % :content last) city-anchors)))
-
-(defn cities-with-offset
-  "Returns all cities with the given `offset-str` in the hickory doc `hdoc`"
-  [offset-regex hdoc]
-  (let [rows (rows-with-offset offset-regex hdoc)]
-    (reduce concat
-            (map cities-in-row rows))))
-
-(defn cities-with-zone
-  "Returns all cities with the given `offset-str` in the hickory doc `hdoc`"
-  [zone-regex hdoc]
-  (let [rows (rows-with-zone zone-regex hdoc)]
-    (reduce concat
-            (map cities-in-row rows))))
-
-(defn offset-map [all-offsets hdoc]
-  (loop [res       {}
-         remaining all-offsets]
-    (if (empty? remaining)
-      res
-      (let [offset       (first remaining)
-            offset-regex (str (if (<= 0 offset) "\\+" "") offset)]
-        (recur (assoc res
-                      offset
-                      (cities-with-offset offset-regex hdoc))
-               (rest remaining))))))
-
-(defn zone-map [all-zones hdoc]
-  (loop [res       {}
-         remaining all-zones]
-    (if (empty? remaining)
-      res
-      (let [zone (first remaining)]
-        (recur (assoc res
-                      zone
-                      (cities-with-zone zone hdoc))
-               (rest remaining))))))
 
 (def scraped-zones
   (with-open [r (-> "data/zone-cities.edn" io/resource io/reader)]
