@@ -3,7 +3,8 @@
             [time.zones :as zones]
             [time.utils :as utils]))
 
-(def all-zones (t/available-zone-ids))
+(def all-zones (remove #(nil? (zones/zone-cities %))
+                       (t/available-zone-ids)))
 
 (def fiveoclock 17)
 
