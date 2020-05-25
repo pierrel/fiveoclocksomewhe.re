@@ -50,8 +50,10 @@ nav ul a {
     color: #5b5c5b;
 }
 
-footer.page-footer, .footer-copyright {
+footer.page-footer {
     background-color: transparent;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .page-footer .footer-copyright {
