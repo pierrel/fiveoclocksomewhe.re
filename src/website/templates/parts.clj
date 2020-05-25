@@ -24,6 +24,15 @@
     [:li [:a {:href "/"} "Home"]]
     [:li [:a {:href "/more"} "More (goes nowhere)"]]]])
 
+(def footer
+  [:footer.page-footer
+   [:div.footer-copyright
+    "© 2020 Jimmy B"
+    [:a.grey-text.right
+     {:href "https://github.com/pierrel/fiveoclocksomewhe.re"
+      :target "_blank"}
+     "Source"]]])
+
 (defn main
   "The main template"
   [& content]
@@ -41,7 +50,9 @@
                    :href url}])
          ]
         (into [:body
-               [:div.container
-                content]]
+               [:main
+                [:div.container
+                 content]]
+               footer]
               (javascript (not (env/docker?))))))
 
