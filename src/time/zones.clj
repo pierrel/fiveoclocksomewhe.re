@@ -2,4 +2,4 @@
   (:require [time.zones.data :as data]
             [clojure.set :as se]))
 
-(def zone-cities data/scraped-zones)
+(def zone-cities data/zone-cities)
