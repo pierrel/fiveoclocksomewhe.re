@@ -21,6 +21,9 @@ Before your can run the package and deploy commands you'll need to create a file
 }
 ```
 
+### Data
+I'm using https://www.zeitverschiebung.net/en/all-time-zones.html to map time zones to cities. It should be refreshed frequently: `$ clj -m time.scraper > src/data/zone-cities.edn` 
+
 ## Running
 You can run the app using the server script
 `$ clj -A:dev -m server`
